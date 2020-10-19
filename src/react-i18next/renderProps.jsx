@@ -7,7 +7,9 @@ const Index = () => {
             {
                 t => {
                     return (
-                        <div style={{background: 'red', margin: 20, color: 'white', width: 200}}>{t('methods.renderProps')}</div>
+                        <div style={{background: 'red', margin: 20, color: 'white', width: 200}}>
+                            {t('methods.renderProps')}
+                        </div>
                     );
                 }
             }

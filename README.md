@@ -1,68 +1,250 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+## React-i18n
+####  安装依赖
+```
+# npm
+$ npm install react-i18next i18next --save
+```
+如果需要检测当前浏览器的语言或者从服务器获取配置资源可以安装下面依赖
+```
+npm install i18next-http-backend i18next-browser-languagedetector --save
+```
 
-### `yarn start`
+#### 初始化配置
+新增i18n.js文件
+```js
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+import Backend from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+import resources from './locales/resources'
+// don't want to use this?
+// have a look at the Quick start guide 
+// for passing in lng and translations on init
 
-### `yarn test`
+i18n
+  // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
+  // learn more: https://github.com/i18next/i18next-http-backend
+  .use(Backend)
+  // detect user language
+  // learn more: https://github.com/i18next/i18next-browser-languageDetector
+  .use(LanguageDetector)
+  // pass the i18n instance to react-i18next.
+  .use(initReactI18next)
+  // init i18next
+  // for all options read: https://www.i18next.com/overview/configuration-options
+  .init({
+    fallbackLng: 'zh',
+    lng: 'zh',
+    debug: true,
+    resources: resources,
+    interpolation: {
+      escapeValue: false, // not needed for react as it escapes by default
+    }
+  });
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+export default i18n;
+```
+将**i18n.js**文件引入到入口文件中App.js
+```js
+import React from 'react';
+import './i18n';
 
-### `yarn build`
+export default class App extends React.Component {
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    render() {
+        return (
+            <div>
+                {/* 省略...... */}
+            </div>
+        )
+    }
+}
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
+#### 切换语言
+```js
+<Button onClick={() => i18n.changeLanguage('zh')}>{t('切换到中文')}</Button>
+```
+#### RenderProps
+```js
+import React from 'react';
+import { Translation } from 'react-i18next';
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+const Index = () => {
+    return (
+        <Translation>
+            {
+                t => {
+                    return (
+                        <div style={{background: 'red', margin: 20, color: 'white', width: 200}}>
+                            {t('methods.renderProps')}
+                        </div>
+                    );
+                }
+            }
 
-### `yarn eject`
+        </Translation>
+    )
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+export default Index;
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Hook
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 
+```js
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+const Index = () => {
+    const { t } = useTranslation();
+    return (
+        <div style={{ background: 'yellow', margin: 20, width: 200 }}>
+            {t('methods.hook')}
+        </div>
+    )
+}
 
-## Learn More
+export default Index;
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Hoc
+```js
+import React from 'react';
+import { withTranslation } from 'react-i18next';
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const Index = ({ t }) => {
+  return (
+    <div style={{ background: 'blue', margin: 20, color: 'white', width: 200 }}>
+      {t('methods.hoc')}
+    </div>
+  );
+}
 
-### Code Splitting
+export default withTranslation()(Index);
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## React-intl
+#### 安装依赖
+```
+npm i -S react-intl
+```
 
-### Analyzing the Bundle Size
+#### 初始化
+```js
+mport React from 'react';
+import { IntlProvider, FormattedMessage } from 'react-intl';
+import App from './App';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+export default class Index extends React.Component {
 
-### Making a Progressive Web App
+    render() {
+        const { locale } = this.state;
+        return (
+            <IntlProvider locale={locale} messages={this.messages[locale]}>
+                <App >
+            </IntlProvider>
+        )
+    }
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+#### 切换语言
+```js
+mport React from 'react';
+import { IntlProvider, FormattedMessage } from 'react-intl';
+import { Button, Row, Col } from 'antd';
+import zh from './locales/zh';
+import en from './locales/en';
+import ja from './locales/ja';
 
-### Advanced Configuration
+export default class Index extends React.Component {
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+    messages = {
+        zh: zh,
+        en: en,
+        ja: ja
+    }
+    state = {
+        locale: 'zh'
+    }
 
-### Deployment
+    render() {
+        return (
+            <IntlProvider locale={this.state.locale} messages={this.messages[this.state.locale]}>
+                <Row gutter={16} style={{ margin: 20 }}>
+                    <Col>
+                        <Button onClick={() => this.setState({ locale: 'zh' })}>
+                            <FormattedMessage id='changeToChinese' />
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={() => this.setState({ locale: 'en' })}>
+                            <FormattedMessage id='changeToEnglish' />
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={() => this.setState({ locale: 'ja' })}>
+                            <FormattedMessage id='changeToJapanese' />
+                        </Button>
+                    </Col>
+                </Row>
+            </IntlProvider>
+        )
+    }
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+#### 通过id获取对应的语言文本
+```js
+<div style={{ margin: 20, background: 'red', color: 'white', width: 233 }}>
+    <FormattedMessage id='welcome' />
+</div>
+```
 
-### `yarn build` fails to minify
+#### 使用缺省消息
+```js
+<div style={{ margin: 20, background: 'purple', color: 'white', width: 233 }}>
+    <FormattedMessage id='defaultMessage' defaultMessage='使用缺省消息' />
+</div>
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+#### 使用描述
+```js
+<div style={{ margin: 20, background: 'black', color: 'white', width: 233 }}>
+    <FormattedMessage id='description' defaultMessage='描述' description='使用描述' />
+</div>
+```
+
+#### 通过value传值
+```js
+<div style={{ margin: 20, background: 'blue', color: 'white', width: 233 }}>
+    <FormattedMessage id='value' values={{ value: 233 }} />
+</div>
+```
+
+#### 函数作为FormattedMessage的子组件
+```js
+<div style={{ margin: 20, background: 'green', color: 'white', width: 233 }}>
+    <FormattedMessage id='function'>
+        {
+            txt => (
+                <div style={{fontSize: 30}}>{txt}</div>
+            )
+        }
+    </FormattedMessage>
+</div>
+```
+
+#### 参考文档
+- https://react.i18next.com/
+- https://formatjs.io/
+- https://blog.bitsrc.io/react-i18n-how-to-internationalize-your-react-application-3a12bba5a980
+
+#### Demo 地址
+https://github.com/freezing2616/react-i18n-demo
