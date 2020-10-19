@@ -1,24 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
+import ReactI18next from './react-i18next';
+import ReactIntl from './react-intl';
 import './App.css';
+import { Tabs } from 'antd';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Tabs>
+        <Tabs.TabPane tab='React-i18next' key='1'>
+          <ReactI18next />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab='React-intl' key='2'>
+          <ReactIntl />
+        </Tabs.TabPane>
+      </Tabs>
     </div>
   );
 }
