@@ -19,23 +19,23 @@ export default class Index extends React.Component {
     render() {
         return (
             <IntlProvider locale={this.state.locale} messages={this.messages[this.state.locale]}>
-                <div style={{ margin: 20 }}>
+                <div style={{ margin: 20, background: 'red', color: 'white', width: 233 }}>
                     <FormattedMessage id='welcome' />
                 </div>
-                <div style={{ margin: 20 }}>
+                <div style={{ margin: 20, background: 'purple', color: 'white', width: 233 }}>
                     <FormattedMessage id='defaultMessage' defaultMessage='使用缺省消息' />
                 </div>
-                <div style={{ margin: 20 }}>
+                <div style={{ margin: 20, background: 'black', color: 'white', width: 233 }}>
                     <FormattedMessage id='description' defaultMessage='描述' description='使用描述' />
                 </div>
-                <div style={{ margin: 20 }}>
+                <div style={{ margin: 20, background: 'blue', color: 'white', width: 233 }}>
                     <FormattedMessage id='value' values={{ value: 233 }} />
                 </div>
-                <div style={{ margin: 20 }}>
+                <div style={{ margin: 20, background: 'green', color: 'white', width: 233 }}>
                     <FormattedMessage id='function'>
                         {
                             txt => (
-                                <div style={{fontSize: 30, color: 'red'}}>{txt}</div>
+                                <div style={{fontSize: 30}}>{txt}</div>
                             )
                         }
                     </FormattedMessage>
