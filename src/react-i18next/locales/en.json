@@ -1,0 +1,12 @@
+{
+    "欢迎使用 react-i18next": "Welcome to react using react-i18next",
+    "切换语言": "change language",
+    "切换到中文": "change to Chinese",
+    "切换到英文": "change to English",
+    "切换到日文": "change to Japenese",
+    "methods": {
+        "renderProps": "change language with render props",
+        "hook": "change language with hook",
+        "hoc": "change language with hoc"
+    }
+}
