@@ -1,5 +1,5 @@
 
-国际化可以使web站点或者app在不同的国家或者地区使用。可以国际化的内容有文本，日期、时间和数字的格式，还有货币等。目前市场上流行的react国际化框架主要有react-i18n和react-intl，本文主要以文本国际化为主介绍两种方案的用法及对比。
+国际化可以使web站点或者app在不同的国家或者地区使用。可以国际化的内容有文本，日期、时间和数字的格式，还有货币等。目前市场上流行的react国际化框架主要有react-i18n和react-intl，本文主要以文本国际化来两种方案的入门用法及对比。
 
 
 ## React-i18next
@@ -317,6 +317,16 @@ export default class Index extends React.Component {
     </FormattedMessage>
 </div>
 ```
+
+#### 对比
+
+- React-i18next初始化的时候需要将初始化配置放置在初始化文件（i18n.js）中，然后将初始化文件(i18n.js)通过import的方式引入到入口文件中即可。当然也可以通过I18nextProvider将i18n往下传递到各子组件。React-intl提供的是context api初始化方案，需要将初始化配置放在IntlProvider组件中，并且将入口文件的组件（如<App>)作为IntlProvider的子组件来使用；
+- React-i18next提供了切换语言的接口(i18n.changeLanguage)，react-intl则需要对切换做一些封装的工作；
+- React-i18next提供了三种方式进行国际化操作（render props、hook和hoc)， react-intl提供了api（intl.formatMessage()）和组件(<FormattedMessage />)两种方式进行国际化；
+- React-i18next的语言资源文件为json格式，react-intl为js格式，同时支持变量传值；
+- React-i18next有很多插件可以使用比如检测当前系统语言，从后端获取数据等；
+- React-intl除文本翻译外还提供日期、时间和金额的国际化支持；
+- React-i18next的npm周下载量681,123次，一个月前有更新，包大小为298 kB。React-intl的npm周下载量780,176次，一周前有更新，包大小为513 kB。
 
 #### 参考文档
 - https://react.i18next.com/
