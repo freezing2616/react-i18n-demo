@@ -1,12 +1,13 @@
 import React from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-const Index = ({ t }) => {
-  return (
-    <div style={{ background: 'blue', margin: 20, color: 'white', width: 200 }}>
-      {t('methods.hoc')}
-    </div>
-  );
+const Index = () => {
+    const { t } = useTranslation();
+    return (
+        <div style={{ background: 'yellow', margin: 20, width: 200 }}>
+            {t('methods.hook')}
+        </div>
+    )
 }
 
-export default withTranslation()(Index);
+export default Index;
