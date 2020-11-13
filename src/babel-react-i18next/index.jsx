@@ -1,7 +1,7 @@
 import React from 'react';
-import RenderProps from './renderProps';
-import HookView from './hoc';
-import HocView from './hook';
+import ComponentC from './componentC';
+import ComponentA from './componentA';
+import ComponentB from './componentB';
 import { Button, Row, Col } from 'antd';
 import { Translation } from 'react-i18next';
 import './i18n'; //这里是为了写demo，不影响react-intl的使用。正确方式应该放在入口文件中，例如App.js
@@ -11,9 +11,9 @@ export default class Index extends React.Component {
     render() {
         return (
             <div>
-                <RenderProps />
-                <HookView />
-                <HocView />
+                <ComponentA />
+                <ComponentB />
+                <ComponentC />
                 <Translation>
                     {
                         (t, { i18n }) => (
